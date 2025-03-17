@@ -13,9 +13,16 @@ class UsersController extends Controller
     /**
      * Find All User
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        $perPage = $request->query('per_page');
+
+        if (!$perPage) {
+            $users = User::all();
+        } else {
+            $users = User::paginate((int) $perPage);
+        }
+
         return response()->json($users);
     }
 
