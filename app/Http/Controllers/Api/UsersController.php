@@ -18,9 +18,9 @@ class UsersController extends Controller
         $perPage = $request->query('per_page');
 
         if (!$perPage) {
-            $users = User::all();
+            $users = User::orderBy('created_at', 'desc')->get();
         } else {
-            $users = User::paginate((int) $perPage);
+            $users = User::orderBy('created_at', 'desc')->paginate((int) $perPage);
         }
 
         return response()->json($users);
