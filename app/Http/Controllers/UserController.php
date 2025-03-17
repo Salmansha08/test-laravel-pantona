@@ -34,8 +34,12 @@ class UserController extends Controller
 
         $validated['password'] = Hash::make($validated['password']);
 
-        if ($request->hasFile('picture')) {
-            $validated['picture'] = $request->file('picture')->store('profile_pictures', 'public');
+        if (request()->hasFile('picture')) {
+            $file = $request->file('picture');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '_' . uniqid() . '.' . $extension;
+            $path = $file->storeAs('posts', $filename, 'public');
+            $data['picture'] = '/storage/' . $path;
         }
 
         $user = User::create($validated);
@@ -71,8 +75,12 @@ class UserController extends Controller
             $validated['password'] = Hash::make($validated['password']);
         }
 
-        if ($request->hasFile('picture')) {
-            $validated['picture'] = $request->file('picture')->store('profile_pictures', 'public');
+        if (request()->hasFile('picture')) {
+            $file = $request->file('picture');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '_' . uniqid() . '.' . $extension;
+            $path = $file->storeAs('posts', $filename, 'public');
+            $data['picture'] = '/storage/' . $path;
         }
 
         $user->update($validated);
