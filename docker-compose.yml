@@ -1,0 +1,25 @@
+services:
+    db:
+        image: mysql:9
+        container_name: laravel_db
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_DATABASE}
+        volumes:
+            - db_data:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        networks:
+            - app-network
+        restart: unless-stopped
+
+volumes:
+    db_data:
+        driver: local
+        name: laravel_db_data
+
+networks:
+    app-network:
+        driver: bridge
