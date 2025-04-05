@@ -1,5 +1,5 @@
 @BASE_URL = http://127.0.0.1:8000/api
-@token = Bearer 4|dyHHFA3ztx3amJrkEd97DuYtvK6lRpudgds0T36K6b171736
+@token = Bearer 7|eL4MSPJa2y7umcX9jLKY7vEXGPTRj9Sba1276MN4ee382fa8
 
 ###
 
@@ -23,14 +23,14 @@ Authorization: {{token}}
 
 ###
 
-# PATCH
-PATCH {{BASE_URL}}/users/2
-Content-Type: multipart/form-data
+# PUT without image
+PUT {{BASE_URL}}/users/01960761-f6c5-71f4-b5ab-7469c8f2af2f
+Content-Type: application/json
 Accept: application/json
 Authorization: {{token}}
 
 {
-  "name": "Admin3",
+  "name": "Admin6",
   "email": "admin2@gmail.com",
   "password": "admin123"
 }
