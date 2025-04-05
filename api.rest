@@ -1,0 +1,80 @@
+@BASE_URL = http://127.0.0.1:8000/api
+@token = Bearer 4|dyHHFA3ztx3amJrkEd97DuYtvK6lRpudgds0T36K6b171736
+
+###
+
+# GET
+GET {{BASE_URL}}/users
+Content-Type: application/json
+
+###
+
+# POST
+POST {{BASE_URL}}/users
+Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
+
+{
+  "name": "Admin2",
+  "email": "admin3@gmail.com",
+  "password": "admin123"
+}
+
+###
+
+# PATCH
+PATCH {{BASE_URL}}/users/2
+Content-Type: multipart/form-data
+Accept: application/json
+Authorization: {{token}}
+
+{
+  "name": "Admin3",
+  "email": "admin2@gmail.com",
+  "password": "admin123"
+}
+
+###
+
+# DELETE
+DELETE {{BASE_URL}}/users/2
+Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
+
+# ==============================
+# AUTH
+### Register
+POST {{BASE_URL}}/auth/register
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Admin",
+  "email": "admin@gmail.com",
+  "password": "admin123",
+  "password_confirmation": "admin123"
+}
+
+### Login
+POST {{BASE_URL}}/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "admin@gmail.com",
+  "password": "admin123"
+}
+
+### Chekk Auth
+GET {{BASE_URL}}/auth/me
+Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
+
+### Logout
+POST {{BASE_URL}}/auth/logout
+Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
