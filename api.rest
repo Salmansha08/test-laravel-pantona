@@ -24,7 +24,7 @@ Content-Type: application/json
 ### 
 
 # GET
-GET {{BASE_URL}}/users/01960bd8-e7c2-70c7-af09-fe3e24f074e8
+GET {{BASE_URL}}/users/01960be3-384d-70d6-8b3c-c2b648297496
 Content-Type: application/json
 
 ###
@@ -44,14 +44,14 @@ Authorization: {{token}}
 ###
 
 # PUT without image
-PUT {{BASE_URL}}/users/01960bd8-e7c2-70c7-af09-fe3e24f074e8
+PUT {{BASE_URL}}/users/01960be3-384d-70d6-8b3c-c2b648297496
 Content-Type: application/json
 Accept: application/json
 Authorization: {{token}}
 
 {
-  "name": "kamu",
-  "email": "admin88@gmail.com",
+  "name": "kamu333",
+  "email": "admin@gmail.com",
   "password": "admin123"
 }
 
@@ -98,3 +98,29 @@ POST {{BASE_URL}}/auth/logout
 Content-Type: application/json
 Accept: application/json
 Authorization: {{token}}
+
+
+# ======================================================================================
+# name and email only
+curl -X POST "http://127.0.0.1:8000/api/users/01960bd8-e7c2-70c7-af09-fe3e24f074e8" `
+--header "Authorization: Bearer 2|SSPX3ztk3miJBxud4gPzfnNYXh21WM1l0252SBhSeb96d038" `
+--header "Accept: application/json" `
+--form "_method=PUT" `
+--form "name=name" `
+--form "email=email@sajaaaa.com"
+
+# picture only
+curl -X POST "http://127.0.0.1:8000/api/users/01960bd8-e7c2-70c7-af09-fe3e24f074e8" `
+--header "Authorization: Bearer 2|SSPX3ztk3miJBxud4gPzfnNYXh21WM1l0252SBhSeb96d038" `
+--header "Accept: application/json" `
+--form "_method=PUT" `
+--form "picture=@D:\Salman\say.jpeg"
+
+# name, email, and picture
+curl -X POST "http://127.0.0.1:8000/api/users/01960bd8-e7c2-70c7-af09-fe3e24f074e8" `
+--header "Authorization: Bearer 2|SSPX3ztk3miJBxud4gPzfnNYXh21WM1l0252SBhSeb96d038" `
+--header "Accept: application/json" `
+--form "_method=PUT" `
+--form "name=John Doe" `
+--form "email=johndoe@example.com" `
+--form "picture=@D:\Salman\ggp.png"

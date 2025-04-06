@@ -110,11 +110,12 @@ class UsersController extends Controller
         }
 
         $user->update($updateData);
-        $user = $user->fresh();
 
         if ($request->hasFile('picture') && $oldPicture && ($oldPicture !== $user->picture)) {
             Storage::disk('public')->delete(str_replace('/storage/', '', $oldPicture));
         }
+
+        $user = $user->fresh();
 
         return response()->json([
             'message' => 'User updated successfully',
