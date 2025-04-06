@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
@@ -91,11 +91,7 @@ class UsersController extends Controller
     public function update(Request $request, string $id): JsonResponse
     {
         $user = User::findOrFail($id);
-        if ($user->id !== $id) {
-            return response()->json([
-                'message' => 'User not found',
-            ], 404);
-        }
+        $oldPicture = $user->picture;
 
         $filelds = $request->validate([
             'name' => 'nullable|string|max:255',
@@ -119,6 +115,10 @@ class UsersController extends Controller
 
         $user->update($updateData);
         $user = $user->fresh();
+
+        if ($request->hasFile('picture') && $oldPicture && ($oldPicture !== $user->picture)) {
+            Storage::disk('public')->delete(basename($oldPicture));
+        }
 
         return response()->json([
             'message' => 'User updated successfully',
