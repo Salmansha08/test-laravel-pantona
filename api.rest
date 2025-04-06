@@ -3,8 +3,28 @@
 
 ###
 
+# PUT without image
+PUT {{BASE_URL}}/users/01960bd8-e7c2-70c7-af09-fe3e24f074e8
+Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
+
+{
+  "name": "kamu",
+  "email": "admin88@gmail.com",
+  "password": "admin123"
+}
+
+###
+
 # GET
 GET {{BASE_URL}}/users
+Content-Type: application/json
+
+### 
+
+# GET
+GET {{BASE_URL}}/users/01960bd8-e7c2-70c7-af09-fe3e24f074e8
 Content-Type: application/json
 
 ###
@@ -24,14 +44,14 @@ Authorization: {{token}}
 ###
 
 # PUT without image
-PUT {{BASE_URL}}/users/01960761-f6c5-71f4-b5ab-7469c8f2af2f
+PUT {{BASE_URL}}/users/01960bd8-e7c2-70c7-af09-fe3e24f074e8
 Content-Type: application/json
 Accept: application/json
 Authorization: {{token}}
 
 {
-  "name": "Admin6",
-  "email": "admin2@gmail.com",
+  "name": "kamu",
+  "email": "admin9@gmail.com",
   "password": "admin123"
 }
 

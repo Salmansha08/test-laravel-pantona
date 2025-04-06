@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 
 class UsersController extends Controller
 {
@@ -47,7 +47,7 @@ class UsersController extends Controller
     {
         $filelds = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6',
             'picture' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
@@ -91,33 +91,34 @@ class UsersController extends Controller
     public function update(Request $request, string $id): JsonResponse
     {
         $user = User::findOrFail($id);
+        if ($user->id !== $id) {
+            return response()->json([
+                'message' => 'User not found',
+            ], 404);
+        }
 
-        $validated = $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|string|email|max:255',
-            'password' => 'sometimes|string|min:6',
+        $filelds = $request->validate([
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:6',
             'picture' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
-        if (empty($validated)) {
-            return response()->json([
-                'message' => 'No valid fields provided for update',
-            ], 422);
-        }
+        $updateData = request()->only(['name', 'email']);
+        if (isset($filelds['password'])) $updateData['password'] = Hash::make($filelds['password']);
 
-        if (isset($validated['password'])) {
-            $validated['password'] = Hash::make($validated['password']);
-        }
+        $filelds = request()->only(['name', 'email', 'password']);
 
-        if ($request->hasFile('picture')) {
+        if (request()->hasFile('picture')) {
             $file = $request->file('picture');
             $extension = $file->getClientOriginalExtension();
             $filename = time() . '_' . uniqid() . '.' . $extension;
             $path = $file->storeAs('users', $filename, 'public');
-            $validated['picture'] = '/storage/' . $path;
+            $updateData['picture'] = '/storage/' . $path;
         }
 
-        $user->update($validated);
+        $user->update($updateData);
+        $user = $user->fresh();
 
         return response()->json([
             'message' => 'User updated successfully',
