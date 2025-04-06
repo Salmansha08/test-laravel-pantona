@@ -1,18 +1,18 @@
 @BASE_URL = http://127.0.0.1:8000/api
-@token = Bearer 7|eL4MSPJa2y7umcX9jLKY7vEXGPTRj9Sba1276MN4ee382fa8
+@token = Bearer 2|SSPX3ztk3miJBxud4gPzfnNYXh21WM1l0252SBhSeb96d038
 
 ###
 
-# PUT without image
-PUT {{BASE_URL}}/users/01960bd8-e7c2-70c7-af09-fe3e24f074e8
+# Change Password
+PATCH {{BASE_URL}}/auth/change-password
 Content-Type: application/json
 Accept: application/json
 Authorization: {{token}}
 
 {
-  "name": "kamu",
-  "email": "admin88@gmail.com",
-  "password": "admin123"
+  "current_password": "admin123",
+  "new_password": "admin1234",
+  "new_password_confirmation": "admin1234"
 }
 
 ###
@@ -51,7 +51,7 @@ Authorization: {{token}}
 
 {
   "name": "kamu",
-  "email": "admin9@gmail.com",
+  "email": "admin88@gmail.com",
   "password": "admin123"
 }
 

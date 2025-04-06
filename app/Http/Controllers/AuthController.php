@@ -19,20 +19,11 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $filelds['password'] = Hash::make($filelds['password']);
 
         $filelds = request()->only(['name', 'email', 'password']);
-
-        if (request()->hasFile('picture')) {
-            $file = $request->file('picture');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '_' . uniqid() . '.' . $extension;
-            $path = $file->storeAs('users', $filename, 'public');
-            $filelds['picture'] = '/storage/' . $path;
-        }
 
         $user = User::create($filelds);
 
@@ -95,6 +86,33 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Logged out successfully.',
+        ], 200);
+    }
+
+    /**
+     * Change Password
+     */
+    public function changePassword(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'current_password' => 'required|string|min:8',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'message' => 'Current password is incorrect.',
+            ], 401);
+        }
+
+        User::where('id', $user->id)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return response()->json([
+            'message' => 'Password changed successfully.',
         ], 200);
     }
 }
